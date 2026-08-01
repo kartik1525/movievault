@@ -1,0 +1,355 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* ============================================
+   CineVault Design System — Tailwind CSS v4
+   ============================================ */
+
+@theme {
+  /* Color System */
+  --color-cv-bg: #0B0B0D;
+  --color-cv-bg-secondary: #141417;
+  --color-cv-surface: #1A1A1E;
+  --color-cv-card: #222228;
+  --color-cv-card-hover: #2A2A32;
+  --color-cv-border: rgba(255, 255, 255, 0.06);
+  --color-cv-border-hover: rgba(255, 255, 255, 0.12);
+
+  --color-cv-text: #F7F7F5;
+  --color-cv-text-secondary: #A8A8B3;
+  --color-cv-text-tertiary: #6B6B76;
+  --color-cv-text-muted: #4A4A54;
+
+  --color-cv-accent: #C8102E;
+  --color-cv-accent-hover: #E01235;
+  --color-cv-accent-muted: rgba(200, 16, 46, 0.15);
+  --color-cv-gold: #D6A75C;
+  --color-cv-gold-muted: rgba(214, 167, 92, 0.15);
+  --color-cv-success: #2FA772;
+  --color-cv-success-muted: rgba(47, 167, 114, 0.15);
+  --color-cv-warning: #E5A100;
+  --color-cv-error: #E53E3E;
+
+  /* Typography — Font families */
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* Spacing scale */
+  --spacing-page-x: clamp(1rem, 5vw, 6rem);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.3), 0 1px 4px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow-accent: 0 0 20px rgba(200, 16, 46, 0.25);
+  --shadow-glow-gold: 0 0 20px rgba(214, 167, 92, 0.2);
+
+  /* Animation durations */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /* Z-index scale */
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
+
+
+/* ============================================
+   Base Styles
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-cv-bg);
+  color: var(--color-cv-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-cv-text-tertiary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cv-text-secondary);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-cv-accent-muted);
+  color: var(--color-cv-text);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-cv-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   Typography Utilities
+   ============================================ */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Heading sizes — refined type scale */
+.text-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.text-h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.text-h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.text-h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.text-body-lg {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.text-body-sm {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.text-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   Component Utilities
+   ============================================ */
+
+/* Glass effect — used sparingly */
+.glass {
+  background: rgba(20, 20, 23, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-subtle {
+  background: rgba(20, 20, 23, 0.5);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+}
+
+/* Card base */
+.card {
+  background-color: var(--color-cv-card);
+  border: 1px solid var(--color-cv-border);
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover {
+  border-color: var(--color-cv-border-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Gradient overlays for backdrop images */
+.gradient-overlay-bottom {
+  background: linear-gradient(
+    to top,
+    var(--color-cv-bg) 0%,
+    rgba(11, 11, 13, 0.85) 30%,
+    rgba(11, 11, 13, 0.4) 60%,
+    transparent 100%
+  );
+}
+
+.gradient-overlay-left {
+  background: linear-gradient(
+    to right,
+    var(--color-cv-bg) 0%,
+    rgba(11, 11, 13, 0.7) 50%,
+    transparent 100%
+  );
+}
+
+.gradient-overlay-full {
+  background: linear-gradient(
+    to top,
+    var(--color-cv-bg) 0%,
+    rgba(11, 11, 13, 0.6) 50%,
+    rgba(11, 11, 13, 0.3) 100%
+  );
+}
+
+/* Page container */
+.page-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: var(--spacing-page-x);
+  padding-right: var(--spacing-page-x);
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-cv-card) 0%,
+    var(--color-cv-card-hover) 50%,
+    var(--color-cv-card) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Image loading blur-up */
+.img-loading {
+  filter: blur(20px);
+  transform: scale(1.05);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.img-loaded {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
