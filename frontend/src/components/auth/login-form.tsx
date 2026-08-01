@@ -42,7 +42,7 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full">
       {authError && (
         <div className="flex items-center gap-2 p-3.5 rounded-xl bg-cv-accent/15 border border-cv-accent/30 text-cv-accent text-xs font-medium">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -51,7 +51,7 @@ export function LoginForm() {
       )}
 
       {/* Email */}
-      <div className="space-y-1.5">
+      <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-cv-text-secondary">Email Address</label>
         <div className="relative">
           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-cv-text-tertiary" />
@@ -59,7 +59,7 @@ export function LoginForm() {
             {...register('email')}
             type="email"
             placeholder="you@example.com"
-            className="w-full pl-10 pr-4 py-3 bg-cv-surface border border-cv-border rounded-xl text-sm text-cv-text placeholder-cv-text-tertiary focus:outline-none focus:border-cv-accent transition-colors"
+            className="w-full pl-10 pr-4 py-3.5 bg-cv-surface border border-cv-border rounded-xl text-sm text-cv-text placeholder-cv-text-tertiary focus:outline-none focus:border-cv-accent focus:shadow-[0_0_15px_rgba(200,16,46,0.15)] transition-all duration-200"
           />
         </div>
         {errors.email && (
@@ -68,7 +68,7 @@ export function LoginForm() {
       </div>
 
       {/* Password */}
-      <div className="space-y-1.5">
+      <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <label className="text-xs font-medium text-cv-text-secondary">Password</label>
           <Link
@@ -84,7 +84,7 @@ export function LoginForm() {
             {...register('password')}
             type="password"
             placeholder="••••••••"
-            className="w-full pl-10 pr-4 py-3 bg-cv-surface border border-cv-border rounded-xl text-sm text-cv-text placeholder-cv-text-tertiary focus:outline-none focus:border-cv-accent transition-colors"
+            className="w-full pl-10 pr-4 py-3.5 bg-cv-surface border border-cv-border rounded-xl text-sm text-cv-text placeholder-cv-text-tertiary focus:outline-none focus:border-cv-accent focus:shadow-[0_0_15px_rgba(200,16,46,0.15)] transition-all duration-200"
           />
         </div>
         {errors.password && (

@@ -119,11 +119,11 @@ export const MovieCard = memo(function MovieCard({ movie, index = 0 }: MovieCard
           </div>
 
           {/* Info */}
-          <div className="mt-3 px-0.5">
-            <h3 className="text-sm font-medium text-cv-text line-clamp-1 group-hover:text-cv-accent transition-colors duration-200">
+          <div className="mt-4 px-0.5">
+            <h3 className="text-sm font-semibold text-cv-text line-clamp-1 group-hover:text-cv-accent transition-colors duration-200">
               {movie.title}
             </h3>
-            <p className="text-xs text-cv-text-tertiary mt-0.5 font-mono">
+            <p className="text-xs text-cv-text-tertiary mt-1.5 font-mono">
               {formatYear(movie.release_date)}
             </p>
           </div>

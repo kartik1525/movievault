@@ -25,7 +25,7 @@ export function GenreCard({ genre, index = 0 }: GenreCardProps) {
       >
         <div
           className={cn(
-            'relative overflow-hidden rounded-xl border border-cv-border p-6 h-32 flex flex-col justify-end',
+            'relative overflow-hidden rounded-xl border border-cv-border p-7 h-40 flex flex-col justify-end',
             'bg-gradient-to-br',
             gradient,
             'group-hover:border-cv-border-hover group-hover:scale-[1.02] transition-all duration-300 shadow-lg'

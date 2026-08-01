@@ -23,7 +23,7 @@ export function MovieCarousel({ movies, isLoading = false }: MovieCarouselProps)
 
   if (isLoading) {
     return (
-      <div className="flex gap-4 overflow-hidden py-2">
+      <div className="flex gap-6 overflow-hidden py-2">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="flex-shrink-0 w-36 sm:w-44 md:w-52">
             <MovieCardSkeleton />
@@ -55,7 +55,7 @@ export function MovieCarousel({ movies, isLoading = false }: MovieCarouselProps)
       {/* Movie list container */}
       <div
         ref={containerRef}
-        className="flex gap-4 md:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 -mx-1"
+        className="flex gap-6 md:gap-7 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 -mx-1"
       >
         {movies.map((movie, index) => (
           <div key={movie.id} className="flex-shrink-0 w-36 sm:w-44 md:w-52">

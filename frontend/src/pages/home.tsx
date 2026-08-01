@@ -47,7 +47,7 @@ export default function HomePage() {
         onPlayTrailer={(id) => setActiveTrailerMovieId(id)}
       />
 
-      <div className="page-container space-y-4">
+      <div className="page-container space-y-16 pb-16">
         {/* Trending Section */}
         <MovieRow
           title="Trending This Week"
@@ -108,7 +108,7 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 md:gap-8">
                 {genres.slice(0, 12).map((genre, idx) => (
                   <GenreCard key={genre.id} genre={genre} index={idx} />
                 ))}

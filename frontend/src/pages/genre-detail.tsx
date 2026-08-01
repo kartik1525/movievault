@@ -38,7 +38,7 @@ export default function GenreDetailPage() {
 
   return (
     <AnimatedPage>
-      <div className="page-container pt-28 pb-16 space-y-8">
+      <div className="page-container pt-32 pb-24 space-y-12">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <PageHeader
             title={`${genreName} Movies`}

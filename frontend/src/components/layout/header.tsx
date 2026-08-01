@@ -73,7 +73,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-5">
               {NAV_LINKS.map((link) => (
                 <NavLink
                   key={link.path}
@@ -104,7 +104,7 @@ export function Header() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               {/* Search button */}
               <button
                 onClick={handleSearchOpen}

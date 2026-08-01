@@ -15,13 +15,13 @@ export default function GenresPage() {
         />
 
         {isLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
             {Array.from({ length: 15 }).map((_, i) => (
-              <div key={i} className="h-32 rounded-xl skeleton" />
+              <div key={i} className="h-40 rounded-xl skeleton" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8">
             {genres?.map((genre, idx) => (
               <GenreCard key={genre.id} genre={genre} index={idx} />
             ))}
