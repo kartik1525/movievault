@@ -47,7 +47,7 @@ export default function HomePage() {
         onPlayTrailer={(id) => setActiveTrailerMovieId(id)}
       />
 
-      <div className="page-container space-y-16 pb-16">
+      <div className="page-container flex flex-col gap-20 md:gap-28 pt-8 pb-24">
         {/* Trending Section */}
         <MovieRow
           title="Trending This Week"
@@ -86,7 +86,7 @@ export default function HomePage() {
 
         {/* Genres Showcase */}
         {genres && genres.length > 0 && (
-          <section className="py-12">
+          <section>
             <motion.div
               variants={fadeInUp}
               initial="hidden"
@@ -118,7 +118,7 @@ export default function HomePage() {
         )}
 
         {/* Featured Collections / Editor's Pick CTA */}
-        <section className="py-12">
+        <section>
           <motion.div
             variants={fadeInUp}
             initial="hidden"

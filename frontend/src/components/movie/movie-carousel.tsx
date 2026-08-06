@@ -55,7 +55,7 @@ export function MovieCarousel({ movies, isLoading = false }: MovieCarouselProps)
       {/* Movie list container */}
       <div
         ref={containerRef}
-        className="flex gap-6 md:gap-7 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 -mx-1"
+        className="flex gap-6 md:gap-7 overflow-x-auto no-scrollbar carousel-fade scroll-smooth py-2 px-1 -mx-1"
       >
         {movies.map((movie, index) => (
           <div key={movie.id} className="flex-shrink-0 w-36 sm:w-44 md:w-52">

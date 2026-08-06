@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Star, Info, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -7,10 +7,6 @@ import { formatYear, formatRating, truncate } from '@/utils/format';
 import { GENRE_MAP } from '@/config/constants';
 import { movieRoute } from '@/config/routes';
 import type { Movie } from '@/types/movie';
-
-const HeroParticles = lazy(() =>
-  import('@/components/three/hero-particles').then((m) => ({ default: m.HeroParticles }))
-);
 
 interface MovieHeroProps {
   movies: Movie[];
@@ -43,9 +39,15 @@ export function MovieHero({ movies, onPlayTrailer }: MovieHeroProps) {
 
   return (
     <section className="relative w-full h-[85vh] min-h-[580px] max-h-[850px] overflow-hidden bg-cv-bg">
-      <Suspense fallback={null}>
-        <HeroParticles />
-      </Suspense>
+      {/* CSS-based ambient light effect — replaces Three.js particles */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        aria-hidden="true"
+        style={{
+          background: 'radial-gradient(ellipse at 25% 50%, rgba(200,16,46,0.07) 0%, transparent 55%), radial-gradient(ellipse at 75% 30%, rgba(100,60,180,0.05) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(214,167,92,0.04) 0%, transparent 45%)',
+          animation: 'hero-drift 20s ease-in-out infinite',
+        }}
+      />
       <AnimatePresence mode="wait">
         <motion.div
           key={current.id}
