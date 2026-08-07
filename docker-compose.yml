@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cinevault-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      # Add other necessary backend environment variables here
+      # - MONGO_URI=your_mongo_uri
+      # - JWT_SECRET=your_jwt_secret
+    restart: unless-stopped
+    networks:
+      - cinevault-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cinevault-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - cinevault-network
+
+networks:
+  cinevault-network:
+    driver: bridge
