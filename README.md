@@ -155,24 +155,31 @@ The Express server will start on [http://localhost:5000](http://localhost:5000).
 
 ## 📡 Backend REST API Documentation
 
+All list endpoints support **pagination** via `?page=1&limit=20` query parameters (max limit: 100).
+
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
+| `GET` | `/api/health` | ❌ | Health check (status, DB, uptime, memory) |
 | `POST` | `/api/auth/sync` | ✅ | Synchronize Firebase user session with MongoDB |
 | `GET` | `/api/users/me` | ✅ | Fetch current user profile & preferences |
 | `PUT` | `/api/users/me` | ✅ | Update profile display name & preferences |
-| `GET` | `/api/favorites` | ✅ | Get list of user's favorited movies |
+| `GET` | `/api/favorites` | ✅ | Get list of user's favorited movies (paginated) |
+| `GET` | `/api/favorites/count` | ✅ | Get total count of user's favorites |
+| `GET` | `/api/favorites/check/:movieId` | ✅ | Check if movie is favorited |
 | `POST` | `/api/favorites` | ✅ | Add movie to user favorites |
 | `DELETE` | `/api/favorites/:movieId` | ✅ | Remove movie from user favorites |
-| `GET` | `/api/favorites/check/:movieId` | ✅ | Check if movie is favorited |
-| `GET` | `/api/watchlist` | ✅ | Get user's saved watchlist |
+| `GET` | `/api/watchlist` | ✅ | Get user's saved watchlist (paginated) |
+| `GET` | `/api/watchlist/count` | ✅ | Get watchlist count (total/watched/unwatched) |
+| `GET` | `/api/watchlist/check/:movieId` | ✅ | Check if movie is in watchlist |
 | `POST` | `/api/watchlist` | ✅ | Add movie to watchlist |
 | `PUT` | `/api/watchlist/:movieId` | ✅ | Update watched status |
 | `DELETE` | `/api/watchlist/:movieId` | ✅ | Remove movie from watchlist |
-| `GET` | `/api/reviews/movie/:movieId` | ❌ | Fetch all public reviews for a movie |
-| `GET` | `/api/reviews/user` | ✅ | Fetch all reviews authored by user |
+| `GET` | `/api/reviews/movie/:movieId` | ❌ | Fetch all public reviews for a movie (paginated) |
+| `GET` | `/api/reviews/user` | ✅ | Fetch all reviews authored by user (paginated) |
 | `POST` | `/api/reviews` | ✅ | Submit a new movie review |
 | `PUT` | `/api/reviews/:id` | ✅ | Update an existing user review |
 | `DELETE` | `/api/reviews/:id` | ✅ | Delete a user review |
+
 
 ---
 

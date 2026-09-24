@@ -5,14 +5,32 @@ const {
   addFavorite,
   removeFavorite,
   checkFavorite,
+  getFavoritesCount,
 } = require('../controllers/favorites-controller');
 const { verifyToken } = require('../middleware/auth');
+const {
+  handleValidationErrors,
+  paginationRules,
+  movieIdParam,
+  addFavoriteRules,
+} = require('../middleware/validators');
 
+// All favorites routes require authentication
 router.use(verifyToken);
 
-router.get('/', getFavorites);
-router.post('/', addFavorite);
-router.delete('/:movieId', removeFavorite);
-router.get('/check/:movieId', checkFavorite);
+// GET /api/favorites — List user favorites (paginated)
+router.get('/', paginationRules, handleValidationErrors, getFavorites);
+
+// GET /api/favorites/count — Get total favorites count
+router.get('/count', getFavoritesCount);
+
+// GET /api/favorites/check/:movieId — Check if movie is favorited
+router.get('/check/:movieId', movieIdParam, handleValidationErrors, checkFavorite);
+
+// POST /api/favorites — Add movie to favorites
+router.post('/', addFavoriteRules, handleValidationErrors, addFavorite);
+
+// DELETE /api/favorites/:movieId — Remove movie from favorites
+router.delete('/:movieId', movieIdParam, handleValidationErrors, removeFavorite);
 
 module.exports = router;

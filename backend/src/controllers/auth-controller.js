@@ -1,5 +1,11 @@
 const User = require('../models/User');
+const { sendSuccess } = require('../utils/response');
 
+/**
+ * POST /api/auth/sync
+ * Synchronize Firebase user session with MongoDB.
+ * Creates user if not found, updates if already exists.
+ */
 async function syncUser(req, res, next) {
   try {
     const { uid, email, displayName, photoURL } = req.user;
@@ -13,17 +19,16 @@ async function syncUser(req, res, next) {
         displayName: displayName || email.split('@')[0],
         photoURL,
       });
-    } else {
-      user.email = email || user.email;
-      if (displayName) user.displayName = displayName;
-      if (photoURL) user.photoURL = photoURL;
-      await user.save();
+      return sendSuccess(res, 201, user, 'User profile created');
     }
 
-    res.json({
-      success: true,
-      data: user,
-    });
+    // Update existing user with latest Firebase data
+    user.email = email || user.email;
+    if (displayName) user.displayName = displayName;
+    if (photoURL) user.photoURL = photoURL;
+    await user.save();
+
+    return sendSuccess(res, 200, user, 'User profile synced');
   } catch (error) {
     next(error);
   }
