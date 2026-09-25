@@ -7,6 +7,10 @@ import { formatYear, formatRating } from '@/utils/format';
 import { movieRoute } from '@/config/routes';
 import { cn } from '@/utils/cn';
 import type { Movie } from '@/types/movie';
+import { useCheckFavorite, useCheckWatchlist, useToggleFavorite, useToggleWatchlist } from '@/hooks/use-user-data';
+import { useAuth } from '@/context/auth-context';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/config/routes';
 
 interface MovieCardProps {
   movie: Movie;
@@ -17,6 +21,17 @@ export const MovieCard = memo(function MovieCard({ movie, index = 0 }: MovieCard
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const { data: isFavoriteData } = useCheckFavorite(movie.id);
+  const { data: isWatchlistData } = useCheckWatchlist(movie.id);
+  const toggleFavorite = useToggleFavorite();
+  const toggleWatchlist = useToggleWatchlist();
+
+  const isFavorite = isFavoriteData ?? false;
+  const isWatchlisted = isWatchlistData?.isInWatchlist ?? false;
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -34,6 +49,26 @@ export const MovieCard = memo(function MovieCard({ movie, index = 0 }: MovieCard
       cardRef.current.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
     }
   }, []);
+
+  const onFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    if (!user) {
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+    toggleFavorite.mutate({ movieId: movie.id, movieTitle: movie.title, posterPath: movie.poster_path, isFavorite });
+  };
+
+  const onWatchlistClick = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    if (!user) {
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+    toggleWatchlist.mutate({ movieId: movie.id, movieTitle: movie.title, posterPath: movie.poster_path, isWatchlisted });
+  };
 
   return (
     <motion.div
@@ -90,18 +125,24 @@ export const MovieCard = memo(function MovieCard({ movie, index = 0 }: MovieCard
                 </div>
                 <div className="flex items-center gap-1">
                   <button
-                    className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
-                    aria-label="Add to favorites"
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    className={`p-1.5 rounded-lg transition-colors ${
+                      isFavorite ? 'bg-cv-accent/90' : 'bg-white/10 hover:bg-white/20'
+                    } ${toggleFavorite.isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    aria-label="Toggle favorites"
+                    disabled={toggleFavorite.isPending}
+                    onClick={onFavoriteClick}
                   >
-                    <Heart className="w-3.5 h-3.5 text-white" />
+                    <Heart className={`w-3.5 h-3.5 ${isFavorite ? 'fill-white text-white' : 'text-white'}`} />
                   </button>
                   <button
-                    className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
-                    aria-label="Add to watchlist"
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    className={`p-1.5 rounded-lg transition-colors ${
+                      isWatchlisted ? 'bg-cv-gold/90' : 'bg-white/10 hover:bg-white/20'
+                    } ${toggleWatchlist.isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    aria-label="Toggle watchlist"
+                    disabled={toggleWatchlist.isPending}
+                    onClick={onWatchlistClick}
                   >
-                    <Plus className="w-3.5 h-3.5 text-white" />
+                    <Plus className={`w-3.5 h-3.5 ${isWatchlisted ? 'text-cv-bg' : 'text-white'}`} />
                   </button>
                 </div>
               </div>

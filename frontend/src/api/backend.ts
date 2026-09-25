@@ -60,6 +60,11 @@ export async function removeFromWatchlist(movieId: number) {
   await backendClient.delete(`/watchlist/${movieId}`);
 }
 
+export async function checkWatchlist(movieId: number) {
+  const { data } = await backendClient.get<BackendResponse<{ isInWatchlist: boolean; watched: boolean }>>(`/watchlist/check/${movieId}`);
+  return data.data;
+}
+
 // ── Reviews ──
 export async function getMovieReviews(movieId: number) {
   const { data } = await backendClient.get<BackendResponse<Review[]>>(`/reviews/movie/${movieId}`);

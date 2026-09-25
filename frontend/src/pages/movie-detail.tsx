@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
+import { ROUTES } from '@/config/routes';
+import { useAuth } from '@/context/auth-context';
 import { motion } from 'framer-motion';
 import {
   Play,
@@ -29,6 +31,12 @@ import {
   useSimilarMovies,
 } from '@/hooks/use-movies';
 import {
+  useCheckFavorite,
+  useCheckWatchlist,
+  useToggleFavorite,
+  useToggleWatchlist,
+} from '@/hooks/use-user-data';
+import {
   getBackdropUrl,
   getPosterUrl,
 } from '@/utils/image';
@@ -45,11 +53,11 @@ import { fadeInUp, staggerContainer, staggerItem } from '@/animations/variants';
 export default function MovieDetailPage() {
   const { movieId } = useParams<{ movieId: string }>();
   const id = Number(movieId);
-
-  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [isWatchlisted, setIsWatchlisted] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const { data: movie, isLoading, isError } = useMovieDetails(id);
   const { data: credits } = useMovieCredits(id);
@@ -57,6 +65,43 @@ export default function MovieDetailPage() {
   const { data: images } = useMovieImages(id);
   const { data: recommendations } = useRecommendations(id);
   const { data: similar } = useSimilarMovies(id);
+
+  const { data: isFavoriteData } = useCheckFavorite(id);
+  const { data: isWatchlistData } = useCheckWatchlist(id);
+  
+  const toggleFavorite = useToggleFavorite();
+  const toggleWatchlist = useToggleWatchlist();
+
+  const isFavorite = isFavoriteData ?? false;
+  const isWatchlisted = isWatchlistData?.isInWatchlist ?? false;
+
+  const handleToggleFavorite = () => {
+    if (!user) {
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+    if (!movie) return;
+    toggleFavorite.mutate({
+      movieId: movie.id,
+      movieTitle: movie.title,
+      posterPath: movie.poster_path,
+      isFavorite,
+    });
+  };
+
+  const handleToggleWatchlist = () => {
+    if (!user) {
+      navigate(ROUTES.LOGIN);
+      return;
+    }
+    if (!movie) return;
+    toggleWatchlist.mutate({
+      movieId: movie.id,
+      movieTitle: movie.title,
+      posterPath: movie.poster_path,
+      isWatchlisted,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -133,24 +178,26 @@ export default function MovieDetailPage() {
             {/* Quick Actions Bar under poster */}
             <div className="flex items-center gap-3 w-64 md:w-80 mt-6">
               <button
-                onClick={() => setIsFavorite(!isFavorite)}
+                onClick={handleToggleFavorite}
+                disabled={toggleFavorite.isPending}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-semibold transition-all ${
                   isFavorite
                     ? 'bg-cv-accent text-white border-cv-accent'
                     : 'bg-cv-surface text-cv-text border-cv-border hover:border-cv-border-hover'
-                }`}
+                } ${toggleFavorite.isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 <Heart className={`w-4 h-4 ${isFavorite ? 'fill-white' : ''}`} />
                 {isFavorite ? 'Favorited' : 'Favorite'}
               </button>
 
               <button
-                onClick={() => setIsWatchlisted(!isWatchlisted)}
+                onClick={handleToggleWatchlist}
+                disabled={toggleWatchlist.isPending}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border text-sm font-semibold transition-all ${
                   isWatchlisted
                     ? 'bg-cv-gold text-cv-bg border-cv-gold'
                     : 'bg-cv-surface text-cv-text border-cv-border hover:border-cv-border-hover'
-                }`}
+                } ${toggleWatchlist.isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {isWatchlisted ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
                 {isWatchlisted ? 'Watchlisted' : 'Watchlist'}

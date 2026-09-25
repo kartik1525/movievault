@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { AnimatedPage } from '@/components/common/animated-page';
 import { PageHeader } from '@/components/common/page-header';
 import { EmptyState } from '@/components/common/empty-state';
@@ -6,11 +5,12 @@ import { MovieCard } from '@/components/movie/movie-card';
 import { useAuth } from '@/context/auth-context';
 import { Link } from 'react-router';
 import { ROUTES } from '@/config/routes';
-import type { Movie } from '@/types/movie';
+import { useWatchlist } from '@/hooks/use-user-data';
+import { Loader2 } from 'lucide-react';
 
 export default function WatchlistPage() {
   const { user } = useAuth();
-  const [watchlist] = useState<Movie[]>([]);
+  const { data: watchlist, isLoading } = useWatchlist();
 
   return (
     <AnimatedPage>
@@ -34,7 +34,11 @@ export default function WatchlistPage() {
               </Link>
             }
           />
-        ) : watchlist.length === 0 ? (
+        ) : isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="w-8 h-8 animate-spin text-cv-accent" />
+          </div>
+        ) : !watchlist || watchlist.length === 0 ? (
           <EmptyState
             variant="watchlist"
             title="Your watchlist is empty"
@@ -50,8 +54,27 @@ export default function WatchlistPage() {
           />
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-            {watchlist.map((movie, index) => (
-              <MovieCard key={movie.id} movie={movie} index={index} />
+            {watchlist.map((item, index) => (
+              <MovieCard 
+                key={item.movieId} 
+                movie={{
+                  id: item.movieId,
+                  title: item.movieTitle,
+                  poster_path: item.posterPath,
+                  original_title: item.movieTitle,
+                  overview: '',
+                  backdrop_path: null,
+                  release_date: '',
+                  vote_average: 0,
+                  vote_count: 0,
+                  popularity: 0,
+                  genre_ids: [],
+                  adult: false,
+                  original_language: 'en',
+                  video: false,
+                }} 
+                index={index} 
+              />
             ))}
           </div>
         )}

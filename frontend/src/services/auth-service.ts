@@ -5,13 +5,29 @@ import {
   sendPasswordResetEmail,
   updateProfile as firebaseUpdateProfile,
   sendEmailVerification,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 import { syncUser } from '@/api/backend';
 import { setAuthToken } from '@/api/axios';
 
+const googleProvider = new GoogleAuthProvider();
+
 export async function loginUser(email: string, pass: string) {
   const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+  const token = await userCredential.user.getIdToken();
+  setAuthToken(token);
+  try {
+    await syncUser();
+  } catch {
+    // Backend may be offline in dev, allow auth to proceed
+  }
+  return userCredential.user;
+}
+
+export async function signInWithGoogle() {
+  const userCredential = await signInWithPopup(auth, googleProvider);
   const token = await userCredential.user.getIdToken();
   setAuthToken(token);
   try {
